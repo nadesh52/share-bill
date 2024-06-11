@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Order, initOrder } from "@/types/Order";
+import { Order } from "@/types/Order";
 import OrderList from "./OrderList";
 import PeopleDropdown from "./PeopleDropdown";
 
@@ -8,20 +8,34 @@ const OrderTab = () => {
   const [currentId, setCurrentId] = useState<number>(1);
   const [inputs, setInputs] = useState<any>({ people: [] });
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isclear, setIsClear] = useState<boolean>(false);
 
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
     const id = currentId;
     setInputs({ ...inputs, id: id, [name]: value });
-    // console.log({ ...inputs, id: id, [name]: value, people: p });
   };
 
   const handleSubmit = () => {
     setOrders((o) => [...o, inputs]);
     setCurrentId(currentId + 1);
-    setInputs(initOrder);
-    setInputs({ ...inputs, people: [] })
+    setInputs({ people: [] });
+    setIsClear(true)
+  };
+
+  const handleSelectedPeople = (person: any, action: string) => {
+    if (action === "add") {
+      if (!inputs.people.includes(person)) {
+        setInputs({ ...inputs, people: [...inputs.people, person] });
+        setIsClear(false);
+      }
+    } else if (action === "remove") {
+      setInputs({
+        ...inputs,
+        people: inputs.people.filter((p: any) => p !== person),
+      });
+    }
   };
 
   const handleEdit = (e: any) => {
@@ -32,15 +46,17 @@ const OrderTab = () => {
     <article>
       Order
       <div>
-        name
-        <input
-          name="name"
-          type="text"
-          autoComplete="off"
-          onChange={(e) => handleChange(e)}
-          value={inputs.name || ""}
-          className="bg-base"
-        />
+        <div>
+          name
+          <input
+            name="name"
+            type="text"
+            autoComplete="off"
+            onChange={(e) => handleChange(e)}
+            value={inputs.name || ""}
+            className="bg-base"
+          />
+        </div>
         <div>
           quantity
           <input
@@ -65,9 +81,8 @@ const OrderTab = () => {
         </div>
         {/*  */}
         <PeopleDropdown
-          selectedPeople={(e: any) =>
-            setInputs({ ...inputs, people: [...inputs?.people, e] })
-          }
+          selectedPeople={handleSelectedPeople}
+          onClear={isclear}
         />
         <button
           onClick={handleSubmit}

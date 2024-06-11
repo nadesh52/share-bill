@@ -2,7 +2,7 @@
 import { usePeople } from "@/context/PeopleContext";
 import React, { useEffect, useRef, useState } from "react";
 
-const PeopleDropdown = ({ selectedPeople }: any) => {
+const PeopleDropdown = ({ selectedPeople, onClear }: any) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [listPeople, setListPeople] = useState<any[]>([]);
   const { people } = usePeople();
@@ -22,14 +22,21 @@ const PeopleDropdown = ({ selectedPeople }: any) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (onClear) {
+      setListPeople([]);
+    }
+  }, [onClear]);
+
   return (
     <div>
-      {listPeople.map((p) => (
-        <div key={p}>
+      {listPeople?.map((p) => (
+        <div key={`${p}+1`}>
           <span
             onClick={() => {
-              setListPeople(listPeople.filter((i) => i !== p));
+              setListPeople((prev) => prev.filter((i) => i !== p));
               setMenuOpen(true);
+              selectedPeople(p, 'remove')
             }}
           >
             {p} - OX
@@ -56,7 +63,7 @@ const PeopleDropdown = ({ selectedPeople }: any) => {
                     key={p}
                     onClick={(e) => {
                       e.preventDefault();
-                      selectedPeople(p);
+                      selectedPeople(p, 'add');
                       setListPeople((prev) => [...prev, p]);
                       setMenuOpen(true);
                     }}
