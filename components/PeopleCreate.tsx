@@ -1,47 +1,62 @@
 "use client";
 import React, { useRef, useState } from "react";
-import PeopleList from "./PeopleList";
 import { usePeople } from "@/context/PeopleContext";
 
-const PeopleSelection = () => {
+const PeopleCreate = () => {
   const { setPeople } = usePeople();
 
   const [query, setQuery] = useState("");
+  const [genId, setGenId] = useState(1);
   const [selectedPeople, setSelectedPeople] = useState<any[]>([]);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const filteredPeople = selectedPeople.filter(
-    (p: any) =>
-      p?.toLocaleLowerCase()?.includes(query.toLocaleLowerCase()?.trim()) &&
-      !selectedPeople.includes(p)
-  );
+  const handleAdd = (e: any) => {
+    e.preventDefault();
+    if (isDisable) return;
+
+    const newP = {
+      id: genId,
+      name: query,
+    };
+
+    setSelectedPeople((prev: any) => [...prev, newP]);
+    setPeople((prev: any) => [...prev, newP]);
+    setQuery("");
+    setGenId(genId + 1);
+    inputRef.current?.focus();
+  };
 
   const isDisable =
     !query?.trim() ||
-    selectedPeople.filter(
-      (p) =>
-        p?.toLocaleLowerCase()?.trim() === query?.toLocaleLowerCase()?.trim()
-    )?.length !== 0;
+    selectedPeople.filter((p: any) => {
+      return (
+        p?.name.toLocaleLowerCase()?.trim() ===
+        query?.toLocaleLowerCase()?.trim()
+      );
+    })?.length !== 0;
 
   return (
     <div className="grid place-items-center">
-      <div className="relative">
+      <div>
         {selectedPeople?.length ? (
-          <div className="flex flex-wrap gap-3 bg-white w-40 relative">
-            {selectedPeople.map((p) => {
+          <div className="flex flex-wrap gap-3 bg-white w-40">
+            {selectedPeople.map((p: any) => {
               return (
                 <div
-                  key={p}
+                  key={p.id}
                   className="flex items-center gap-1 rounded-full w-fit pb-1 px-2 bg-green"
                 >
-                  <div>{p}</div>
+                  <div>{p.name}</div>
                   <button
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => {
-                      setSelectedPeople(selectedPeople.filter((i) => i !== p));
-                      setPeople(selectedPeople.filter((i) => i !== p));
+                      setSelectedPeople(
+                        selectedPeople.filter((i: any) => i.name !== p.name)
+                      );
+                      setPeople(
+                        selectedPeople.filter((i: any) => i.name !== p.name)
+                      );
                     }}
                   >
                     <div>
@@ -84,61 +99,22 @@ const PeopleSelection = () => {
           onChange={(e) => setQuery(e.target.value.trimStart())}
           placeholder="search or create new"
           className="bg-grey"
-          onFocus={() => setMenuOpen(true)}
-          onBlur={() => setMenuOpen(false)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !isDisable) {
-              setSelectedPeople((prev) => [...prev, query]);
-              setPeople((prev: any) => [...prev, query]);
-              setQuery("");
-              setMenuOpen(true);
+              handleAdd(e);
             }
           }}
         />
         <button
           disabled={isDisable}
-          onClick={() => {
-            if (isDisable) return;
-            setSelectedPeople((prev) => [...prev, query]);
-            setPeople((prev: any) => [...prev, query]);
-            setQuery("");
-            inputRef.current?.focus();
-          }}
+          onClick={handleAdd}
           className="bg-secondary text-white py-1 px-2 mx-2 rounded disabled:bg-grey disabled:cursor-not-allowed"
         >
           Add
         </button>
-        {/* menu */}
-        {menuOpen ? (
-          <div className="bg-white absolute w-full mt-1 p-1 shadow-md z-50 flex overflow-y-auto scrollbar-thin scrollbar-track-base scrollbar-thumb-secondary">
-            <ul className="w-full">
-              {filteredPeople?.length ? (
-                filteredPeople.map((p: any, i: any) => (
-                  <PeopleList
-                    key={i}
-                    name={p}
-                    onClick={() => {
-                      setMenuOpen(true);
-                      setSelectedPeople((prev) => [...prev, p]);
-                      setQuery("");
-                    }}
-                  />
-                ))
-              ) : (
-                <li
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => setMenuOpen(true)}
-                  className="select-none text-grey"
-                >
-                  no option
-                </li>
-              )}
-            </ul>
-          </div>
-        ) : null}
       </div>
     </div>
   );
 };
 
-export default PeopleSelection;
+export default PeopleCreate;

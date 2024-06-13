@@ -2,15 +2,24 @@
 import { usePeople } from "@/context/PeopleContext";
 import React, { useEffect, useRef, useState } from "react";
 
-const PeopleDropdown = ({ selectedPeople, onClear }: any) => {
+const PeopleDropdown = ({ selectedPeople,  onClear }: any) => {
+  const { people } = usePeople();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [listPeople, setListPeople] = useState<any[]>([]);
-  const { people } = usePeople();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const filteredPeople = people.filter((p: any) => !listPeople.includes(p));
+  const filteredPeople = people.filter((p: any) => {
+    return !listPeople.includes(p.name);
+  });
+
+  const handleClick = (event: any, person: any) => {
+    event.preventDefault();
+    setMenuOpen(true);
+    selectedPeople(person, "add");
+    setListPeople((prev) => [...prev, person.name]);
+  };
 
   useEffect(() => {
     window.addEventListener("click", (e) => {
@@ -27,25 +36,28 @@ const PeopleDropdown = ({ selectedPeople, onClear }: any) => {
       setListPeople([]);
     }
   }, [onClear]);
-
+    
   return (
     <div>
-      {listPeople?.map((p) => (
-        <div key={`${p}+1`}>
+      {listPeople?.map((person) => (
+        <div key={person}>
           <span
             onClick={() => {
-              setListPeople((prev) => prev.filter((i) => i !== p));
+              setListPeople((prev) => prev.filter((i) => i !== person));
               setMenuOpen(true);
-              selectedPeople(p, 'remove')
+              selectedPeople(person, "remove");
             }}
           >
-            {p} - OX
+            {person} - OX
           </span>
         </div>
       ))}
       <div className="relative">
         <button
-          onClick={() => setMenuOpen(true)}
+          onClick={(e) => {
+            e.preventDefault();
+            setMenuOpen(true);
+          }}
           ref={buttonRef}
           className="bg-red p-1 w-fit rounded-md text-white peer"
         >
@@ -60,16 +72,11 @@ const PeopleDropdown = ({ selectedPeople, onClear }: any) => {
               {filteredPeople.length ? (
                 filteredPeople?.map((p: any) => (
                   <li
-                    key={p}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      selectedPeople(p, 'add');
-                      setListPeople((prev) => [...prev, p]);
-                      setMenuOpen(true);
-                    }}
+                    key={p.id}
+                    onClick={(e) => handleClick(e, p)}
                     className="select-none cursor-pointer p-1 rounded hover:bg-secondary hover:text-white"
                   >
-                    {p}
+                    {p.name}
                   </li>
                 ))
               ) : (

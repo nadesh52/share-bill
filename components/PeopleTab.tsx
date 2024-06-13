@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import PeopleSelection from "./PeopleSelection";
+import PeopleCreate from "./PeopleCreate";
 
 const PeopleTab = () => {
   return (
     <article>
       create people
-      <PeopleSelection />
+      <PeopleCreate />
     </article>
   );
 };
