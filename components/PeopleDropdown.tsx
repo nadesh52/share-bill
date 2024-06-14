@@ -2,7 +2,7 @@
 import { usePeople } from "@/context/PeopleContext";
 import React, { useEffect, useRef, useState } from "react";
 
-const PeopleDropdown = ({ selectedPeople,  onClear }: any) => {
+const PeopleDropdown = ({ selectedPeople, onClear }: any) => {
   const { people } = usePeople();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [listPeople, setListPeople] = useState<any[]>([]);
@@ -11,14 +11,18 @@ const PeopleDropdown = ({ selectedPeople,  onClear }: any) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const filteredPeople = people.filter((p: any) => {
-    return !listPeople.includes(p.name);
+    return !listPeople.includes(p);
   });
 
-  const handleClick = (event: any, person: any) => {
+  const handleSelect = (event: any, person: any) => {
     event.preventDefault();
-    setMenuOpen(true);
     selectedPeople(person, "add");
-    setListPeople((prev) => [...prev, person.name]);
+    setListPeople((prev) => [...prev, person]);
+  };
+
+  const handleRemove = (person: any) => {
+    setListPeople((prev) => prev.filter((i) => i.name !== person.name));
+    selectedPeople(person, "remove");
   };
 
   useEffect(() => {
@@ -36,20 +40,12 @@ const PeopleDropdown = ({ selectedPeople,  onClear }: any) => {
       setListPeople([]);
     }
   }, [onClear]);
-    
+
   return (
     <div>
       {listPeople?.map((person) => (
-        <div key={person}>
-          <span
-            onClick={() => {
-              setListPeople((prev) => prev.filter((i) => i !== person));
-              setMenuOpen(true);
-              selectedPeople(person, "remove");
-            }}
-          >
-            {person} - OX
-          </span>
+        <div key={person.id}>
+          <span onClick={() => handleRemove(person)}>{person.name} - DE</span>
         </div>
       ))}
       <div className="relative">
@@ -70,13 +66,13 @@ const PeopleDropdown = ({ selectedPeople,  onClear }: any) => {
           >
             <ul>
               {filteredPeople.length ? (
-                filteredPeople?.map((p: any) => (
+                filteredPeople?.map((person: any) => (
                   <li
-                    key={p.id}
-                    onClick={(e) => handleClick(e, p)}
+                    key={person.id}
+                    onClick={(e) => handleSelect(e, person)}
                     className="select-none cursor-pointer p-1 rounded hover:bg-secondary hover:text-white"
                   >
-                    {p.name}
+                    {person.name}
                   </li>
                 ))
               ) : (

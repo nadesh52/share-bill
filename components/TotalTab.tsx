@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useOrder } from "@/context/OrderContext";
 import PeopleDropdown from "./PeopleDropdown";
 
 const TotalTab = () => {
-  const { order } = useOrder();
-  const [newOrders, setNewOrders] = useState<any>([]);
+  const { order, setOrder } = useOrder();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<any | null>(null);
   const [isclear, setIsClear] = useState<boolean>(false);
@@ -13,13 +12,16 @@ const TotalTab = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
+    const total = editValue.price * editValue.quantity
+    const price = total / editValue.people.length
+
     const newO = {
       ...editValue,
-      price_per_people: editValue.total / editValue.people.length,
+      total: total,
+      price_per_people: price,
     };
-    console.log(newO);
 
-    setNewOrders((prevOrder: any) => {
+    setOrder((prevOrder: any) => {
       return prevOrder.map((o: any) => {
         if (o.id !== newO.id) return o;
         return newO;
@@ -42,10 +44,17 @@ const TotalTab = () => {
 
   const handleChange = (event: any) => {
     const { name, value } = event.target;
-    setEditValue((prev: any) => {
-      return { ...prev, [name]: value };
-    });
-    console.log(editValue);
+
+    if (name !== "name") {
+      const numValue = !isNaN(value) ? parseFloat(value) : value;
+      setEditValue((prev: any) => {
+        return { ...prev, [name]: numValue };
+      });
+    } else {
+      setEditValue((prev: any) => {
+        return { ...prev, [name]: value };
+      });
+    }
   };
 
   const handleSelectedPeople = (person: any, action: string) => {
@@ -57,7 +66,7 @@ const TotalTab = () => {
     } else if (action === "remove") {
       setEditValue({
         ...editValue,
-        people: editValue.people.filter((p: any) => p.name !== person),
+        people: editValue.people.filter((p: any) => p.name !== person.name),
       });
     }
   };
@@ -102,35 +111,31 @@ const TotalTab = () => {
             onClear={isclear}
           />
           <button type="submit">save</button>
+          <button type="button" onClick={() => setIsEdit(false)}>cancel</button>
         </form>
       </>
     );
   };
 
   const onTest = () => {
-    console.log("test");
+    console.log("order", order);
   };
-
-  useEffect(() => {
-    if (!newOrders.includes(null)) {
-      order && setNewOrders((prev: any) => [...prev, order]);
-    }
-  }, [order]);
 
   return (
     <div>
       <p>TotalTab</p>
       <button onClick={onTest}>test</button>
       {isEdit ? <>{editForm()}</> : null}
-      {order ? (
+      {order.length ? (
         <div>
-          {newOrders.map((o: any, i: any) => (
+          {order.map((o: any, i: any) => (
             <div key={i} className="bg-base my-2 p-1">
               <p>{o.name}</p>
-              <p>{o.price}</p>
-              <p>{o.quantity}</p>
+              <span>{o.price} - </span>
+              <span>{o.quantity}</span>
               <p>total {o.total}</p>
-              <p>per people {o.price_per_people || "-"}</p>
+              {o.people.length ? <p>per people {o.price_per_people}</p> : null}
+              
               <p>
                 {o.people?.map((person: any, i: any) => (
                   <span key={i}>{person?.name}</span>

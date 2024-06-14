@@ -1,38 +1,37 @@
 "use client";
 import React, { useState } from "react";
-import { Order } from "@/types/Order";
-import PeopleDropdown from "./PeopleDropdown";
 import { useOrder } from "@/context/OrderContext";
 
 const OrderCreate = () => {
   const { setOrder } = useOrder();
   const [currentId, setCurrentId] = useState<number>(1);
   const [inputs, setInputs] = useState<any>({ people: [] });
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isclear, setIsClear] = useState<boolean>(false);
 
   const handleChange = (event: any) => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { name, value } = event.target;
     const id = currentId;
-    setInputs({ ...inputs, id: id, [name]: value });
+
+    if (name !== "name") {
+      const numValue = !isNaN(value) ? parseFloat(value) : value;
+      setInputs({ ...inputs, id: id, [name]: numValue });
+    } else {
+      setInputs({ ...inputs, id: id, [name]: value });
+    }
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const newOrder: any = {
+    const newOrder = {
       ...inputs,
-      total: parseFloat(inputs.price) * parseFloat(inputs.quantity),
+      total: inputs.price * inputs.quantity,
     };
 
-    setOrder((prev: any) =>   newOrder); // send to context
-    setOrders((order) => [...order, newOrder]); // state
+    setOrder((prev: any) => [...prev, newOrder]);
     setCurrentId(currentId + 1);
     setInputs({ people: [] });
-    setIsClear(true);
   };
-
+  
   return (
     <article>
       Order
@@ -43,6 +42,7 @@ const OrderCreate = () => {
             name="name"
             type="text"
             autoComplete="off"
+            required
             onChange={(e) => handleChange(e)}
             value={inputs.name || ""}
             className="bg-base"
@@ -54,6 +54,7 @@ const OrderCreate = () => {
             name="quantity"
             type="number"
             autoComplete="off"
+            required
             onChange={(e) => handleChange(e)}
             value={inputs.quantity || ""}
             className="bg-base"
@@ -65,6 +66,7 @@ const OrderCreate = () => {
             name="price"
             type="number"
             autoComplete="off"
+            required
             onChange={(e) => handleChange(e)}
             value={inputs.price || ""}
             className="bg-base"
@@ -74,7 +76,6 @@ const OrderCreate = () => {
           add order
         </button>
       </form>
-      <p>order list</p>
     </article>
   );
 };

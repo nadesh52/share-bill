@@ -11,9 +11,11 @@ const Home = () => {
       <PeopleProvider>
         <OrderProvider>
           Home
+          <hr />
           <PeopleTab />
           <hr />
           <OrderTab />
+          <hr />
           <TotalTab />
         </OrderProvider>
       </PeopleProvider>

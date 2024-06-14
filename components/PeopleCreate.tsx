@@ -4,7 +4,6 @@ import { usePeople } from "@/context/PeopleContext";
 
 const PeopleCreate = () => {
   const { setPeople } = usePeople();
-
   const [query, setQuery] = useState("");
   const [genId, setGenId] = useState(1);
   const [selectedPeople, setSelectedPeople] = useState<any[]>([]);
