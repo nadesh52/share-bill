@@ -4,6 +4,7 @@ import { PeopleProvider } from "@/context/PeopleContext";
 import { OrderProvider } from "@/context/OrderContext";
 import TotalTab from "@/components/TotalTab";
 import OrderTab from "@/components/OrderTab";
+import SumTab from "@/components/SumTab";
 
 const Home = () => {
   return (
@@ -17,6 +18,8 @@ const Home = () => {
           <OrderTab />
           <hr />
           <TotalTab />
+          <hr />
+          <SumTab />
         </OrderProvider>
       </PeopleProvider>
     </main>

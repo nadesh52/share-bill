@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 
 type OrderListType = {
+  title?: string;
   children: React.ReactNode;
 };
 
-const Accordion = ({  children }: OrderListType) => {
+const Accordion = ({ title = "title", children }: OrderListType) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -14,7 +15,7 @@ const Accordion = ({  children }: OrderListType) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`bg-yellow w-full flex justify-between p-1 rounded gap-2 select-none`}
       >
-        <span className="font-medium text-lg">title</span>
+        <span className="font-medium text-lg">{title}</span>
         <div className={`${isOpen ? "rotate-180" : "rotate-0"} duration-300`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

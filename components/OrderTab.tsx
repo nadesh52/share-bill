@@ -4,9 +4,9 @@ import OrderCreate from './OrderCreate'
 
 const OrderTab = () => {
   return (
-    <div>
+    <>
     <OrderCreate />
-    </div>
+    </>
   )
 }
 

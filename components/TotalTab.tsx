@@ -42,6 +42,11 @@ const TotalTab = () => {
     setEditValue(editOrder);
   };
 
+  const handleDelete = (event:any, _order:any) =>{
+    event.preventDefault();
+    setOrder(order.filter((item:any)=> (item.name !== _order.name)))
+  }
+
   const handleChange = (event: any) => {
     const { name, value } = event.target;
 
@@ -117,14 +122,9 @@ const TotalTab = () => {
     );
   };
 
-  const onTest = () => {
-    console.log("order", order);
-  };
-
   return (
-    <div>
+    <section>
       <p>TotalTab</p>
-      <button onClick={onTest}>test</button>
       {isEdit ? <>{editForm()}</> : null}
       {order.length ? (
         <div>
@@ -148,11 +148,12 @@ const TotalTab = () => {
               >
                 edit
               </button>
+              <button onClick={(e:any)=> handleDelete(e,o)}>remove</button>
             </div>
           ))}
         </div>
       ) : null}
-    </div>
+    </section>
   );
 };
 
