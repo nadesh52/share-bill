@@ -1,7 +1,7 @@
 "use client";
 import { useOrder } from "@/context/OrderContext";
 import { usePeople } from "@/context/PeopleContext";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "./Accordion";
 
 const SumTab = () => {
@@ -41,7 +41,7 @@ const SumTab = () => {
   }, [people, order]);
 
   return (
-    <article>
+    <article className="mt-4">
       {people.length ? (
         <ul>
           {peopleFilter.map((person: any, idx: any) => (

@@ -1,13 +1,13 @@
-'use client'
-import React from 'react'
-import OrderCreate from './OrderCreate'
+"use client";
+import React from "react";
+import OrderCreate from "./OrderCreate";
 
 const OrderTab = () => {
   return (
     <>
-    <OrderCreate />
+      <OrderCreate />
     </>
-  )
-}
+  );
+};
 
-export default OrderTab
+export default OrderTab;

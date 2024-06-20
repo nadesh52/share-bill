@@ -139,7 +139,7 @@ const OrderCreate = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8"
+                className="size-7"
               >
                 <path
                   strokeLinecap="round"
@@ -159,7 +159,7 @@ const OrderCreate = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-8"
+                className="size-7"
               >
                 <path
                   strokeLinecap="round"
@@ -209,7 +209,7 @@ const OrderCreate = () => {
         </section>
 
         <button type="submit" className="bg-accent rounded h-10 w-full mt-4">
-          Add Order
+          Create Order
         </button>
       </form>
       <TotalTab />

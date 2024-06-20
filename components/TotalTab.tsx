@@ -102,42 +102,6 @@ const TotalTab = () => {
       <>
         <form onSubmit={handleSubmit} className="relative">
           <p className="text-3xl font-medium mb-4">Edit Menu</p>
-          <section className="p-2 shadow rounded mb-4">
-            <PeopleDropdown
-              selectedPeople={handleSelectedPeople}
-              peopleList={filteredPeople}
-            />
-
-            <div className="flex flex-wrap gap-3 w-full mt-4">
-              {filteredPeople.map((person: any) => (
-                <div
-                  key={person.id}
-                  className="flex justify-between gap-1 rounded-md w-fit px-1 border border-primary"
-                >
-                  <span>{person.name}</span>
-                  <button
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => handleRemovePeople(person)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1}
-                      stroke="currentColor"
-                      className="w-5 h-5 text-red"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </section>
 
           <label className="relative">
             <input
@@ -228,6 +192,43 @@ const TotalTab = () => {
               </button>
             </div>
           </label>
+
+          <section className="p-2 shadow rounded mb-4">
+            <PeopleDropdown
+              selectedPeople={handleSelectedPeople}
+              peopleList={filteredPeople}
+            />
+
+            <div className="flex flex-wrap gap-3 w-full mt-4">
+              {filteredPeople.map((person: any) => (
+                <div
+                  key={person.id}
+                  className="flex justify-between gap-1 rounded-md w-fit px-1 border border-primary"
+                >
+                  <span>{person.name}</span>
+                  <button
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleRemovePeople(person)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1}
+                      stroke="currentColor"
+                      className="w-5 h-5 text-red"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <div className="mt-4 flex flex-col gap-4">
             <button

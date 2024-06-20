@@ -38,7 +38,7 @@ const PeopleDropdown = ({ selectedPeople, peopleList }: any) => {
         ref={buttonRef}
         className="bg-white border border-accent h-10 w-full shadow-md rounded-md peer"
       >
-        Add People
+        Add people to list
       </button>
       {menuOpen ? (
         <div
@@ -57,7 +57,9 @@ const PeopleDropdown = ({ selectedPeople, peopleList }: any) => {
                 </li>
               ))
             ) : (
-              <li className="text-sm select-none text-black/40">People list is empty</li>
+              <li className="text-sm select-none text-black/40">
+                People list is empty
+              </li>
             )}
           </ul>
         </div>
