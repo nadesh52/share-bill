@@ -4,10 +4,9 @@ import PeopleCreate from "./PeopleCreate";
 
 const PeopleTab = () => {
   return (
-    <article>
-      create people
+    <>
       <PeopleCreate />
-    </article>
+    </>
   );
 };
 

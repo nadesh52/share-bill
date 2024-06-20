@@ -23,6 +23,15 @@ const config: Config = {
     borderColor: {
       DEFAULT: "#DBEDF3",
       primary: "#0C2D57",
+      secondary: "#836FFF",
+      base: "#F0F3FF",
+      accent: "#15F5BA",
+      black: "#0F0F0F",
+      white: "#FFFFFF",
+      red: "#C70039",
+      green: "#68B984",
+      yellow: "#FED049",
+      grey: "#DBEDF3",
     },
     fontSize: {
       xs: ["10px", "14px"],

@@ -2,20 +2,37 @@
 import React, { useState } from "react";
 
 type OrderListType = {
-  title?: string;
+  person?: any;
   children: React.ReactNode;
 };
 
-const Accordion = ({ title = "title", children }: OrderListType) => {
+const Accordion = ({ person, children }: OrderListType) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`bg-yellow w-full flex justify-between p-1 rounded gap-2 select-none`}
+        className={`bg-accent w-full flex justify-between py-1 px-2 gap-2 select-none ${
+          isOpen ? "rounded-t" : "rounded-t"
+        }`}
       >
-        <span className="font-medium text-lg">{title}</span>
+        <ul className="flex gap-4">
+          <li>
+            <p className="font-medium text-lg">{person?.name}</p>
+          </li>
+          <li>
+            <div className="bg-base px-1 rounded">
+              <span>
+                Orders:
+                <span className="font-medium text-lg ml-2">
+                  {person?.orders?.length}
+                </span>
+              </span>
+            </div>
+          </li>
+        </ul>
+
         <div className={`${isOpen ? "rotate-180" : "rotate-0"} duration-300`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +58,7 @@ const Accordion = ({ title = "title", children }: OrderListType) => {
       >
         <div className="overflow-hidden">{children}</div>
       </div>
-    </div>
+    </>
   );
 };
 
